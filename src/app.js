@@ -5,9 +5,6 @@ const res = require('express/lib/response');
 const app = express();
 // require('./database.js');
 
-// Settings
-app.set('port', process.env.PORT || 3000)
-
 // Middlewares
 
 // GLobal Variables
@@ -19,7 +16,5 @@ app.get('/', (req, res) => {
 
 // Static Files
 
-// Server init
-app.listen(app.get('port'), () => {
-    console.log('Server on port', app.get('port'))
-})
+//Export
+module.exports = app;
