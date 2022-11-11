@@ -16,9 +16,9 @@ router.post("/register", (req, res) => {
       .save(err =>{
         if(err){
             console.log(err);
-            res.status(500).send("ERROR EN REGISTRO");
+            res.status(500).send({data: err, success: false});
         } else {
-            res.status(200).send("USUARIO REGISTRADO");
+            res.status(200).send({data: user, success: true});
         }
       });
 });  
@@ -31,19 +31,19 @@ router.post("/auth", (req, res) => {
       .findOne({dni}, (err, user) => {
         if(err){
             console.log(err)
-            res.status(500).send("ERROR EN AUTENTICACION 1");
+            res.status(500).send({data: err, success: false});
         } else if(!user) {
-            res.status(500).send("USUARIO NO EXISTE");
+            res.status(500).send({data: err, success: false});
         } else {
             console.log(user);
             user.isCorrectPassword(password, (err, result) =>{
                 if(err) {
                     console.log(err);
-                    res.status(500).send("EROOR EN AUTENTICACION 2");
+                    res.status(500).send({data: err, success: false});
                 } else if(result) {
-                    res.status(200).send("USUARIO AUTENTICADO");
+                    res.status(200).send({data: user, success: true});
                 } else {
-                    res.status(500).send("USUARIO Y/O CONTRASEÑA INCORRECTA");
+                    res.status(500).send({data: err, success: false});
                 }
             });
         }
