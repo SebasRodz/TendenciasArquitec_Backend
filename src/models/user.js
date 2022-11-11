@@ -18,14 +18,15 @@ const userSchema = mongoose.Schema({
     },
     correo: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     direccion: {
         type: String,
         required: true
     },
     dni: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },

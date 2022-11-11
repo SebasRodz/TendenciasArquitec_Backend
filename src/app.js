@@ -1,5 +1,7 @@
 const express = require('express');
 const res = require('express/lib/response');
+const cors = require('cors');
+
 const userRoutes = require("./routes/user"); 
 const userDni = require("./routes/dni");
 
@@ -8,6 +10,7 @@ const app = express();
 require('./database.js');
 
 // Middlewares
+app.use(cors());
 app.use(express.json());
 app.use('/api', userRoutes);
 app.use('/api', userDni);
