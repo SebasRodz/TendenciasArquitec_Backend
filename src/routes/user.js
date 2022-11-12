@@ -30,12 +30,10 @@ router.post("/auth", (req, res) => {
     userSchema
       .findOne({dni}, (err, user) => {
         if(err){
-            console.log(err)
             res.status(500).send({data: err, success: false});
         } else if(!user) {
             res.status(500).send({data: err, success: false});
         } else {
-            console.log(user);
             user.isCorrectPassword(password, (err, result) =>{
                 if(err) {
                     console.log(err);
