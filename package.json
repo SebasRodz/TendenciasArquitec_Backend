@@ -28,11 +28,7 @@
     "jscoverage": "^0.6.0",
     "mocha": "^10.1.0",
     "nodemon": "^2.0.20",
-<<<<<<< HEAD
     "nyc": "^15.1.0",
     "swagger-ui-express": "^4.6.0"
-=======
-    "nyc": "^15.1.0"
->>>>>>> main
   }
 }
