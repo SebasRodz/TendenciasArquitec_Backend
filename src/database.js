@@ -1,8 +1,16 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
+const { config } = require("./config");
 
-// Connection
-mongoose
- .connect(process.env.MONGODB_URI)
- .then(() => console.log("Conectado a la Base de Datos"))
- .catch((error) => console.error(error));
+try {
+    const db = mongoose.connect(config.db);
+} catch (error) {
+    console.error(error);
+}
+
+mongoose.connection.on("connected", () => {
+    console.log("Mongoose is connected");
+});
+  
+mongoose.connection.on("disconnected", () => {
+    console.log("Mongoose is disconnected");
+});
