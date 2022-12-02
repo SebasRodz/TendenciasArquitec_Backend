@@ -1,11 +1,16 @@
 const express = require("express");
 const userSchema = require("../models/user");
+const doctorSchema = require("../models/doctors");
+const { send } = require("express/lib/response");
+const { utils } = require("mocha");
 const router = express.Router();
 
 //Probar cosas
-router.get("/probar", (req, res) => {
-  res.send("Probando ando");
-});
+router.post("/probar", (req, res) => {
+  id = req.body.id;
+  res.send(id);
+})
+
 /**
  * @openapi
  * /api/register:
