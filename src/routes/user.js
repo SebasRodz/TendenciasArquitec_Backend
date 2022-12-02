@@ -3,6 +3,7 @@ const userSchema = require("../models/user");
 const doctorSchema = require("../models/doctors");
 const { send } = require("express/lib/response");
 const { utils } = require("mocha");
+const app = require("../app");
 const router = express.Router();
 
 //Probar cosas
@@ -184,4 +185,27 @@ router.post("/auth", (req, res) => {
   );
 });
 
+router.get("/listar", (req, res) => {
+  userSchema
+    .find({tipoUsuario: 0})
+    .exec(function (err, user) {
+      if (err) {
+        res.status(400).send({
+          error: err,
+          sucess: false
+        })
+      }
+      else if (user.length === 0) {
+        res.status(200).send({
+          data: "No existen pacientes en este momento",
+          success: false,
+        })
+      } else {
+        res.status(200).send({
+          data: user,
+          success: true,
+        })
+      }
+    });
+})
 module.exports = router;
