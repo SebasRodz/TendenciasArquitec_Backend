@@ -94,7 +94,8 @@ router.post("/register", (req, res) => {
   })
 
   router.get("/listar/especialidad/:tipo", (req, res) => {
-    const {tipo} = req.params;
+    var {tipo} = req.params;
+    tipo = tipo.toUpperCase();
 
     doctorSchema
       .find({especialidad: tipo})
@@ -115,7 +116,8 @@ router.post("/register", (req, res) => {
   })
 
   router.get("/listar/turno/:hora", (req, res) => {
-    const {hora} = req.params;
+    var {hora} = req.params;
+    hora = hora.toUpperCase();
 
     doctorSchema
       .find({turno: hora})
@@ -133,6 +135,39 @@ router.post("/register", (req, res) => {
           })
         }
       });
+  })
+
+  router.get("/listar/todo/:tipo/:hora", (req, res) => {
+    var {tipo, hora} = req.params;
+    tipo = tipo.toUpperCase();
+    hora = hora.toUpperCase();
+
+    console.log(tipo, hora);
+
+    doctorSchema
+      .find({
+        turno: hora,
+        especialidad: tipo
+      })
+      .populate('doctor')
+      .exec(function (err, doctor) {
+        if (err) {
+          res.status(400).send({
+            error: err,
+            sucess: false
+          });
+        } else if (doctor.length === 0) {
+          res.status(200).send({
+            data: "No hay doctores con estas caracteristicas",
+            sucess: true
+          })
+        } else {
+          res.status(200).send({
+            data: doctor,
+            sucess: true
+          })
+        }
+      })
   })
 
   module.exports = router;
