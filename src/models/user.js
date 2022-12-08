@@ -44,7 +44,7 @@ const userSchema = mongoose.Schema({
     },
     tipoUsuario: {
         type: Number,
-        required: true
+        required: false
     }
 });
 

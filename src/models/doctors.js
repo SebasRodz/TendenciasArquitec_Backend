@@ -4,15 +4,15 @@ const doctorSchema = mongoose.Schema({
     doctor: {
         type: mongoose.ObjectId,
         ref: 'User',
-        require: true 
+        required: true 
     },
     especialidad: {
         type: String,
-        require: true
+        required: true
     },
     turno: {
         type: String,
-        require: true
+        required: true
     }
 });
 

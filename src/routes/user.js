@@ -14,10 +14,12 @@ router.post("/probar", (req, res) => {
 
 /**
  * @openapi
- * /api/register:
+ * /api/users/register:
  *   post:
  *     tags:
- *       - Register
+ *       - Pacientes
+ *     summary: Registro de pacientes.
+ *     description: Se registra un paciente con un formato de JSON definido y requerido.
  *     requestBody:
  *         required: true
  *         content:
@@ -54,7 +56,7 @@ router.post("/probar", (req, res) => {
  *                   example: "M"
  *                 tipoUsuario:
  *                   type: string
- *                   example: "2"
+ *                   example: "0"
  *     responses:
  *       200:
  *         description: OK
@@ -63,35 +65,80 @@ router.post("/probar", (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     apellidoP:
+ *                       type: string
+ *                       example: "Perez"
+ *                     apellidoM:
+ *                       type: string
+ *                       example: "Perez"
+ *                     password:
+ *                       type: string
+ *                       example: "$2a$10$4mrSiR88BEZCDABUnXuU9OvHUe2b/t7.6ATQU8cMnyBIwSxgjLy1a"
+ *                     correo:
+ *                       type: string
+ *                       example: "mail@mail.com"
+ *                     direccion:
+ *                       type: string
+ *                       example: "av 123"
+ *                     dni:
+ *                       type: string
+ *                       example: "12345678"
+ *                     fechanac:
+ *                       type: string
+ *                       example: "2000-12-23T00:00:00"
+ *                     nombre:
+ *                       type: string
+ *                       example: "Jose"
+ *                     sexo:
+ *                       type: string
+ *                       example: "M"
+ *                     tipoUsuario:
+ *                       type: number
+ *                       example: 0
+ *                     _id:
+ *                       type: string
+ *                       example: "639142da2d5c0d30360d9b93"
+ *                 info:
  *                   type: string
- *                   example: "Usuario registrado correctamente"
- *               
- *       500:
+ *                   example: "Usuario registrado."
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       400:
  *         description: Error
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 data:
  *                   type: string
  *                   example: "Error"
- *
- *                 
+ *                 info:
+ *                   type: string
+ *                   example: "Error al registrar usuario"
+ *                 success:
+ *                   type: boolean
+ *                   example: false
  */
 router.post("/register", (req, res) => {
   const user = userSchema(req.body);
+  user.tipoUsuario = 0;
 
   user.save((err) => {
     if (err) {
-      res.status(500).send({
+      res.status(400).send({
         data: err,
+        info: "Error al registrar usuario",
         success: false,
       });
     } else {
       res.status(200).send({
         data: user,
+        info: "Usuario registrado",
         success: true,
       });
     }
@@ -101,10 +148,12 @@ router.post("/register", (req, res) => {
 
 /**
  * @openapi
- * /api/auth:
+ * /api/users/auth:
  *   post:
  *     tags:
- *       - Auth
+ *       - Pacientes
+ *     summary: Autentificacion de usuarios.
+ *     description: Se autentifican los usuarios con un formato JSON definido y requerido.
  *     requestBody:
  *         required: true
  *         content:
@@ -126,10 +175,61 @@ router.post("/register", (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "639145a41fef7b7a7359d9aa"
+ *                     apellidoM:
+ *                       type: string
+ *                       example: "Perez"
+ *                     apellidoP:
+ *                       type: string
+ *                       example: "Perez"
+ *                     password:
+ *                       type: string
+ *                       example: "$2a$10$nPDkTOOmm7vSrADeqkYe3ulI0Sj38HxOB/NiJisYgmZz6TEOHqJO."
+ *                     correo:
+ *                       type: string
+ *                       example: "mail@mail.com"
+ *                     direccion:
+ *                       type: string
+ *                       example: "Av.siempre viva"
+ *                     dni:
+ *                       type: string
+ *                       example: "12345677"
+ *                     fechanac:
+ *                       type: string
+ *                       example: "2000-12-23T00:00:00"
+ *                     nombre:
+ *                       type: string
+ *                       example: "Jose"
+ *                     sexo:
+ *                       type: string
+ *                       example: "M"
+ *                     tipoUsuario:
+ *                       type: number
+ *                       example: 0
+ *                 info:
  *                   type: string
- *                   example: "Usuario registrado correctamente"
- *               
+ *                   example: "Usuario identificado"
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       400:
+ *         description: Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: string
+ *                   example: "Usuario no encontrado / Contraseña incorrecta"  
+ *                 success:
+ *                   type: boolean
+ *                   example: false  
  *       500:
  *         description: Error
  *         content:
@@ -137,11 +237,12 @@ router.post("/register", (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 error:
  *                   type: string
  *                   example: "Error"
- *
- *                 
+ *                 success:
+ *                   type: boolean
+ *                   example: false        
  */
 router.post("/auth", (req, res) => {
   const { dni, password } = req.body;
@@ -154,11 +255,12 @@ router.post("/auth", (req, res) => {
       if (err) {
         res.status(500).send({
           data: err,
+          info: "Error",
           success: false,
         });
       } else if (!user) {
-        res.status(500).send({
-          data: err,
+        res.status(400).send({
+          data: "Usuario no encontrado",
           success: false,
         });
       } else {
@@ -166,17 +268,19 @@ router.post("/auth", (req, res) => {
           if (err) {
             res.status(500).send({
               data: err,
+              info: "Error con la contraseña",
               success: false,
             });
           } else if (result) {
             res.status(200).send({
               data: user,
+              info: "Usuario identificado",
               success: true,
             });
           } else {
-            res.status(500).send({
-              data: err,
-              success: false,
+            res.status(400).send({
+              info: "Contraseña incorrecta",
+              success: false
             });
           }
         });
@@ -185,12 +289,81 @@ router.post("/auth", (req, res) => {
   );
 });
 
+/**
+ * @openapi
+ * /api/users/listar:
+ *   get:
+ *     tags:
+ *       - Pacientes
+ *     summary: Lista el total de pacientes.
+ *     description: Devuelve un JSON con todos los pacientes registrados.
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object  
+ *                   properties: 
+ *                     _id:
+ *                       type: string
+ *                       example: "639145a41fef7b7a7359d9aa"
+ *                     apellidoM:
+ *                       type: string
+ *                       example: "Perez"
+ *                     apellidoP:
+ *                       type: string
+ *                       example: "Perez"
+ *                     password:
+ *                       type: string
+ *                       example: "$2a$10$nPDkTOOmm7vSrADeqkYe3ulI0Sj38HxOB/NiJisYgmZz6TEOHqJO."
+ *                     correo:
+ *                       type: string
+ *                       example: "mail@mail.com"
+ *                     direccion:
+ *                       type: string
+ *                       example: "Av.siempre viva"
+ *                     dni:
+ *                       type: string
+ *                       example: "12345677"
+ *                     fechanac:
+ *                       type: string
+ *                       example: "2000-12-23T00:00:00"
+ *                     nombre:
+ *                       type: string
+ *                       example: "Jose"
+ *                     sexo:
+ *                       type: string
+ *                       example: "M"
+ *                     tipoUsuario:
+ *                       type: number
+ *                       example: 0
+ *                 success:
+ *                   type: string
+ *                   example: "success"   
+ *       500:
+ *         description: Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Error"
+ *                 success:
+ *                   type: boolean
+ *                   example: false            
+ */
 router.get("/listar", (req, res) => {
   userSchema
-    .find({tipoUsuario: 0})
+    .find({ tipoUsuario: 0 })
     .exec(function (err, user) {
       if (err) {
-        res.status(400).send({
+        res.status(500).send({
           error: err,
           sucess: false
         })
@@ -198,7 +371,7 @@ router.get("/listar", (req, res) => {
       else if (user.length === 0) {
         res.status(200).send({
           data: "No existen pacientes en este momento",
-          success: false,
+          success: true,
         })
       } else {
         res.status(200).send({
