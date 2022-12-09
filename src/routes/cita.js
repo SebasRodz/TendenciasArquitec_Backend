@@ -66,6 +66,9 @@ router.post("/register", (req, res) => {
                     })
                   } else {
                     cita.doctor = doctor._id;
+                    cita.especialidad = doctor.especialidad;
+                    cita.turno = doctor.turno;
+                    cita.status = 0;
                     cita.save((err) => {
                       if (err) {
                         res.status(400).send({
@@ -138,8 +141,6 @@ router.get("/listar/paciente/:dni", (req, res) => {
           {
             paciente: paciente._id
           })
-          .populate('User')
-          .populate('Doctor')
           .exec(function (err, cita) {
             if (err) {
               res.status(400).send({

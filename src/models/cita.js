@@ -10,6 +10,18 @@ const citaSchema = mongoose.Schema({
         type: mongoose.ObjectId,
         ref: 'Doctor',
         require: true 
+    },
+    especialidad: {
+        type: String,
+        require: true 
+    },
+    turno: {
+        type: "String",
+        require: true 
+    },
+    status: {
+        type: String,
+        require: true 
     }
 });
 
