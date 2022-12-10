@@ -142,7 +142,12 @@ router.get("/listar/paciente/:dni", (req, res) => {
             paciente: paciente._id
           })
           .populate('paciente')
-          .populate('doctor')
+          .populate({
+            path: 'doctor',
+            populate: {
+              path: 'doctor'
+            }
+          })
           .exec(function (err, cita) {
             if (err) {
               res.status(400).send({
