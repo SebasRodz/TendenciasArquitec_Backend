@@ -122,9 +122,12 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 data:
+ *                 info: 
  *                   type: string
- *                   example: "Error"
+ *                   example: "Especialidad, turno no definido"
+ *                 data:
+ *                   type: array
+ *                   example: []
  *                 success:
  *                   type: boolean
  *                   example: false
@@ -149,12 +152,14 @@ router.post("/register", (req, res) => {
 
     if (especialidad_sub == undefined) {
       return res.status(400).send({
-          data: "Especialidad no definida",
+          info: "Especialidad no definida",
+          data: [],
           success: false
         })
     } else if (turno_sub == undefined) {
       return res.status(400).send({
-          data: "Turno no definido",
+          info: "Turno no definido",
+          data: [],
           success: false
       })
     }
@@ -172,7 +177,7 @@ router.post("/register", (req, res) => {
         doctor.doctor = user._id;
         doctor.save((err) => {
           if (err) {
-            res.status(500).send({
+            res.status(400).send({
               data: err,
               success: false
             });
@@ -255,6 +260,22 @@ router.post("/register", (req, res) => {
  *                 success:
  *                   type: boolean
  *                   example: true
+ *       400: 
+ *         description: Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 info:
+ *                   type: string
+ *                   example: "No existen doctores en este momento"
+ *                 data:
+ *                   type: array
+ *                   example: []
+ *                 success:
+ *                   type: boolean
+ *                   example: false
  *       500:
  *         description: Error
  *         content:
@@ -280,9 +301,10 @@ router.post("/register", (req, res) => {
             success: false
           })
         } else if (doctor.length === 0) {
-          res.status(200).send({
-            data: "No existen doctores en este momento",
-            success: true
+          res.status(400).send({
+            info: "No existen doctores en este momento",
+            data: doctor,
+            success: false
           })
         } else {
           res.status(200).send({
@@ -367,6 +389,22 @@ router.post("/register", (req, res) => {
  *                 success:
  *                   type: boolean
  *                   example: true
+ *       400: 
+ *         description: Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 info:
+ *                   type: string
+ *                   example: "No existen doctores con esta especialidad"
+ *                 data:
+ *                   type: array
+ *                   example: []
+ *                 success:
+ *                   type: boolean
+ *                   example: false
  *       500:
  *         description: Error
  *         content:
@@ -395,9 +433,10 @@ router.post("/register", (req, res) => {
             success: false,
           })
         } else if (doctor.length === 0) {
-          res.status(200).send({
-            data: "No existen doctores con esa especialidad",
-            success: true
+          res.status(400).send({
+            info: "No existen doctores con esa especialidad",
+            data: doctor,
+            success: false
           })
         } else {
           res.status(200).send({
@@ -482,6 +521,22 @@ router.post("/register", (req, res) => {
  *                 success:
  *                   type: boolean
  *                   example: true
+ *       400: 
+ *         description: Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 info:
+ *                   type: string
+ *                   example: "No existen doctores con ese horario"
+ *                 data:
+ *                   type: array
+ *                   example: []
+ *                 success:
+ *                   type: boolean
+ *                   example: false
  *       500:
  *         description: Error
  *         content:
@@ -510,9 +565,10 @@ router.post("/register", (req, res) => {
             success: false,
           })
         } else if (doctor.length === 0) {
-          res.status(200).send({
-            data: "No existen doctores con ese horario",
-            success: true
+          res.status(400).send({
+            info: "No existen doctores con ese horario",
+            data: doctor,
+            success: false
           })
         } else {  
           res.status(200).send({
@@ -603,6 +659,22 @@ router.post("/register", (req, res) => {
  *                 success:
  *                   type: boolean
  *                   example: true
+ *       400: 
+ *         description: Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 info:
+ *                   type: string
+ *                   example: "No hay doctores con estas caracteristicas"
+ *                 data:
+ *                   type: array
+ *                   example: []
+ *                 success:
+ *                   type: boolean
+ *                   example: false
  *       500:
  *         description: Error
  *         content:
@@ -635,9 +707,10 @@ router.post("/register", (req, res) => {
             sucess: false
           });
         } else if (doctor.length === 0) {
-          res.status(200).send({
-            data: "No hay doctores con estas caracteristicas",
-            sucess: true
+          res.status(400).send({
+            info: "No hay doctores con estas caracteristicas",
+            data: doctor,
+            sucess: false
           })
         } else {
           res.status(200).send({

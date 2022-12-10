@@ -115,8 +115,8 @@ router.post("/probar", (req, res) => {
  *               type: object
  *               properties:
  *                 data:
- *                   type: string
- *                   example: "Error"
+ *                   type: array
+ *                   example: []
  *                 info:
  *                   type: string
  *                   example: "Error al registrar usuario"
@@ -224,9 +224,13 @@ router.post("/register", (req, res) => {
  *             schema:
  *               type: object
  *               properties:
+ *                 info:
+ *                   type: string
+ *                   example: "Usuario no encontrado / Contraseña incorrecta"
  *                 data:
  *                   type: string
- *                   example: "Usuario no encontrado / Contraseña incorrecta"  
+ *                   example: []
+ *                   nullable: true
  *                 success:
  *                   type: boolean
  *                   example: false  
@@ -256,12 +260,13 @@ router.post("/auth", (req, res) => {
         res.status(500).send({
           data: err,
           info: "Error",
-          success: false,
+          success: false
         });
       } else if (!user) {
         res.status(400).send({
-          data: "Usuario no encontrado",
-          success: false,
+          info: "Usuario no encontrado",
+          data: user,
+          success: false
         });
       } else {
         user.isCorrectPassword(password, (err, result) => {
@@ -269,17 +274,18 @@ router.post("/auth", (req, res) => {
             res.status(500).send({
               data: err,
               info: "Error con la contraseña",
-              success: false,
+              success: false
             });
           } else if (result) {
             res.status(200).send({
               data: user,
               info: "Usuario identificado",
-              success: true,
+              success: true
             });
           } else {
             res.status(400).send({
               info: "Contraseña incorrecta",
+              data: null,
               success: false
             });
           }
@@ -344,6 +350,22 @@ router.post("/auth", (req, res) => {
  *                 success:
  *                   type: string
  *                   example: "success"   
+ *       400:
+ *         description: Error
+ *         content: 
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties: 
+ *                 data:
+ *                   type: array
+ *                   example: []
+ *                 info:
+ *                   type: string
+ *                   example: "No existen pacientes en este momento."
+ *                 success:
+ *                   type: boolean
+ *                   example: false
  *       500:
  *         description: Error
  *         content:
@@ -369,9 +391,10 @@ router.get("/listar", (req, res) => {
         })
       }
       else if (user.length === 0) {
-        res.status(200).send({
-          data: "No existen pacientes en este momento",
-          success: true,
+        res.status(400).send({
+          data: user,
+          info: "No existen pacientes en este momento",
+          success: false,
         })
       } else {
         res.status(200).send({
