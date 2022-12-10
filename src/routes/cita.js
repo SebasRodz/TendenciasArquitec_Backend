@@ -137,10 +137,12 @@ router.get("/listar/paciente/:dni", (req, res) => {
         });
       } else {
         paciente._id = user._id;
-        citaSchema.findOne(
+        citaSchema.find(
           {
             paciente: paciente._id
           })
+          .populate('paciente')
+          .populate('doctor')
           .exec(function (err, cita) {
             if (err) {
               res.status(400).send({
@@ -187,31 +189,78 @@ router.get("/listar/doctor/:dni", (req, res) => {
         })
       } else {
         doctor._id = user._id; 
-        citaSchema.find(
+        doctorSchema.findOne(
           {
-            doctor: doctor._id
-          },)
-          .populate('User')
-          .populate('Doctor')
-          .exec(function (err, cita) {
+            doctor: doctor._id,
+          },
+          (err, doctor) => {
             if (err) {
               res.status(400).send({
                 data: err,
-                sucess: false,
+                success: false,
               })
-            } else if (cita.length === 0) {
+            } else if (!doctor) {
               res.status(400).send({
-                data: "No existen citas para este doctor",
-                sucess: false
+                data: "No existe doctor con DNI ingresado",
+                success: false,
               })
             } else {
-              res.status(200).send({
-                data: cita,
-                sucess: true
-              })
+              citaSchema.find(
+                {
+                  doctor: doctor._id,
+                })
+                .populate('paciente')
+                .populate('doctor')
+                .exec(function (err, cita) {
+                  if (err) {
+                    res.status(400).send({
+                      data: err,
+                      success: false,
+                    })
+                  } else if (cita) {
+                    res.status(200).send({
+                      data: cita,
+                      success: true,
+                    })
+                  } else {
+                    res.status(400).send({
+                      data: "No existen citas para este doctor",
+                      success: false,
+                    })
+                  }
+                })
             }
-          })  
+          })
       }
     });
 })
+router.post("/actualizar/status", (req, res) => {
+    citaSchema.findById(req.body.id, (err, cita) => {
+      if (err) {
+        res.status(400).send({
+          data: err,
+          success: false,
+        });
+      } else if (!cita) {
+        res.status(400).send({
+          data: "No existe cita con ese ID",
+          success: false,
+        });
+      } else {
+        cita.status = req.body.status;
+        cita.save((err) => {
+          if (err) {
+            res.status(400).send({
+              data: err,
+              success: false,
+            });
+          } else {
+            res.status(200).send({
+              success: true,
+            });
+          }
+        });
+      }
+    });
+});
 module.exports = router;
