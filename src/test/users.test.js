@@ -1,5 +1,8 @@
 const User = require("../models/user")
 
+process.env.MONGODB_URI = "mongodb+srv://sebastianrodriguez:2319arquitectura@cluster0.ye8q6.mongodb.net/test?retryWrites=true&w=majority";
+process.env.PORT = 4000;
+
 const server = require("../../index");
 const chai = require("chai");
 const chaiHttp = require("chai-http");

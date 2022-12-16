@@ -1,0 +1,1096 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ClinicaDental",
+    "description": "APIs de la Clinica Dental",
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor local"
+    },
+    {
+      "url": "https://tendencias-arquitec-backend-wq61.vercel.app",
+      "description": "Servidor de Desarrollo"
+    },
+    {
+      "url": "https://tendencias-arquitec-backend.vercel.app",
+      "description": "Servidor de Producción"
+    }
+  ],
+  "paths": {
+    "/api/pac/{dni}": {
+      "get": {
+        "tags": [
+          "Extra"
+        ],
+        "summary": "Obencion de datos por DNI",
+        "description": "Retorna un JSON con la información del usuario respecto a su DNI como parametro.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dni",
+            "description": "DNI de la persona",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dni_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DNI invalido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dni_400"
+                }
+              }
+            }
+          }
+        }
+      }
+    }, 
+    "/api/users/register": {
+      "post": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Enviar al servidor el correo y la contraseña y validar las credenciales",
+        "description": "Se registra un paciente con un formato de JSON definido y requerido.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/paciente_registro"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/paciente_registro_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/paciente_registro_400"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/auth": {
+      "post": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Autentificacion de usuarios.",
+        "description": "Se autentifican los usuarios con un formato JSON definido y requerido.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auth_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auth_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/listar": {
+      "get": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Lista el total de pacientes.",
+        "description": "Devuelve un JSON con todos los pacientes registrados.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/users_listar_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/users_listar_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/register": {
+      "post": {
+        "tags": [
+          "Doctores"
+        ],
+        "summary": "Registro de doctor.",
+        "description": "Se registra un doctor con un JSON definido y requerido.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/doctor_register_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_register_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_register_400"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/listar": {
+      "get": {
+        "tags": [
+          "Doctores"
+        ],
+        "summary": "Lista el total de doctores.",
+        "description": "Lista el total de doctores existentes.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_listar_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_listar_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/listar/especialidad/{tipo}": {
+      "get": {
+        "tags": [
+          "Doctores"
+        ],
+        "summary": "Lista a los doctores por su especialidad.",
+        "description": "Retorna cada doctor con su respectivo JSON respecto al parametro de especialidad.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tipo",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Especialidad de los doctores a listar."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_listar_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_listar_especialidad_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/listar/turno/{hora}": {
+      "get": {
+        "tags": [
+          "Doctores"
+        ],
+        "summary": "Lista a los doctores por su especialidad.",
+        "description": "Retorna cada doctor con su respectivo JSON respecto al parametro de especialidad.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hora",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Turno de los doctores a listar."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_listar_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_listar_turno_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doctor/listar/todo/{tipo}/{hora}": {
+      "get": {
+        "tags": [
+          "Doctores"
+        ],
+        "summary": "Lista a los doctores por su especialidad y turno.",
+        "description": "Retorna cada doctor con su respectivo JSON respecto al parametro de especialidad y de turno.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tipo",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Especialidad de los doctores a listar."
+          },
+          {
+            "in": "path",
+            "name": "hora",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Turno de los doctores a listar."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_listar_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No hay doctores con estas caracteristicas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doctor_listar_todo_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "dni_200" : {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numero": {
+                "type": "string",
+                "example": "71814623"
+              },
+              "nombre_completo": {
+                "type": "string",
+                "example": "CASTILLO FLORES, SELINE MARYORITH"
+              },
+              "nombres": {
+                "type": "string",
+                "example": "SELINE MARYORITH"
+              },
+              "apellido_paterno": {
+                "type": "string",
+                "example": "CASTILLO"
+              },
+              "apellido_materno": {
+                "type": "string",
+                "example": "FLORES"
+              },
+              "codigo_verificacion": {
+                "type": "number",
+                "example": 8
+              },
+              "fecha_nacimiento": {
+                "type": "string",
+                "example": "2004-04-13"
+              },
+              "sexo": {
+                "type": "string",
+                "example": "FEMENINO"
+              },
+              "estado_civil": {
+                "type": "string",
+                "example": "SOLTERO"
+              },
+              "departamento": {
+                "type": "string",
+                "example": "LIMA"
+              },
+              "provincia": {
+                "type": "string",
+                "example": "LIMA"
+              },
+              "distrito": {
+                "type": "string",
+                "example": "COMAS"
+              },
+              "direccion": {
+                "type": "string",
+                "example": "JR. HUSARES DE JUNIN ASENT.H. EL MIRADOR MZ. V5 LT. 5"
+              },
+              "direccion_completa": {
+                "type": "string",
+                "example": "R. HUSARES DE JUNIN ASENT.H. EL MIRADOR MZ. V5 LT. 5, LIMA - LIMA - COMAS"
+              },
+              "ubigeo_reniec": {
+                "type": "string",
+                "example": "140106"
+              },
+              "ubigeo_sunat": {
+                "type": "string",
+                "example": "150110"
+              },
+              "ubigeo": {
+                "type": "array",
+                "example": []
+              }
+            }
+          },
+          "sources": {
+            "type": "string",
+            "example": "apiperu.dev"
+          }
+        }
+      },
+      "dni_400": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "DNI inválido"
+          },
+          "source": {
+            "type": "string",
+            "example": "apiperu.dev"
+          }
+        }
+      },
+      "paciente_registro": {
+        "type": "object",
+        "properties": {
+          "apellidoP": {
+            "type": "string",
+            "example": "Perez"
+          },
+          "apellidoM": {
+            "type": "string",
+            "example": "Perez"
+          },
+          "password": {
+            "type": "string",
+            "example": "xxxxxxx"
+          },
+          "correo": {
+            "type": "string",
+            "example": "mail@mail.com"
+          },
+          "direccion": {
+            "type": "string",
+            "example": "av 123"
+          },
+          "dni": {
+            "type": "string",
+            "example": "12345678"
+          },
+          "fechanac": {
+            "type": "string",
+            "example": "2000-12-23T00:00:00"
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Jose"
+          },
+          "sexo": {
+            "type": "string",
+            "example": "M"
+          }
+        }
+      },
+      "paciente_registro_200": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "apellidoP": {
+                "type": "string",
+                "example": "Perez"
+              },
+              "apellidoM": {
+                "type": "string",
+                "example": "Perez"
+              },
+              "password": {
+                "type": "string",
+                "example": "$2a$10$4mrSiR88BEZCDABUnXuU9OvHUe2b/t7.6ATQU8cMnyBIwSxgjLy1a"
+              },
+              "correo": {
+                "type": "string",
+                "example": "mail@mail.com"
+              },
+              "direccion": {
+                "type": "string",
+                "example": "av 123"
+              },
+              "dni": {
+                "type": "string",
+                "example": "12345678"
+              },
+              "fechanac": {
+                "type": "string",
+                "example": "2000-12-23T00:00:00"
+              },
+              "nombre": {
+                "type": "string",
+                "example": "Jose"
+              },
+              "sexo": {
+                "type": "string",
+                "example": "M"
+              },
+              "tipoUsuario": {
+                "type": "number",
+                "example": 0
+              },
+              "_id": {
+                "type": "string",
+                "example": "639142da2d5c0d30360d9b93"
+              }
+            }
+          },
+          "info": {
+            "type": "string",
+            "example": "Usuario registrado."
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "paciente_registro_400": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "example": []
+          },
+          "info": {
+            "type": "string",
+            "example": "Error al registrar usuario"
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "auth_request": {
+        "type": "object",
+        "properties": {
+          "dni": {
+            "type": "string",
+            "example": "12345678"
+          },
+          "password": {
+            "type": "string",
+            "example": "xxxxxxx"
+          }
+        }
+      },
+      "auth_200": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "639145a41fef7b7a7359d9aa"
+              },
+              "apellidoM": {
+                "type": "string",
+                "example": "Perez"
+              },
+              "apellidoP": {
+                "type": "string",
+                "example": "Perez"
+              },
+              "password": {
+                "type": "string",
+                "example": "$2a$10$nPDkTOOmm7vSrADeqkYe3ulI0Sj38HxOB/NiJisYgmZz6TEOHqJO."
+              },
+              "correo": {
+                "type": "string",
+                "example": "mail@mail.com"
+              },
+              "direccion": {
+                "type": "string",
+                "example": "Av. siempre viva"
+              },
+              "dni": {
+                "type": "string",
+                "example": "12345678"
+              },
+              "fechanac": {
+                "type": "string",
+                "example": "2000-12-23T00:00:00"
+              },
+              "nombre": {
+                "type": "string",
+                "example": "Jose"
+              },
+              "sexo": {
+                "type": "string",
+                "example": "M"
+              },
+              "tipoUsuario": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          },
+          "info": {
+            "type": "string",
+            "example": "Usuario identificado"
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "auth_400": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string",
+            "example": "Usuario no encontrado / Contraseña incorrecta"
+          },
+          "data": {
+            "type": "array",
+            "example": [],
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "500": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Error"
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "users_listar_200": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "639145a41fef7b7a7359d9aa"
+              },
+              "apellidoM": {
+                "type": "string",
+                "example": "Perez"
+              },
+              "apellidoP": {
+                "type": "string",
+                "example": "Perez"
+              },
+              "password": {
+                "type": "string",
+                "example": "$2a$10$nPDkTOOmm7vSrADeqkYe3ulI0Sj38HxOB/NiJisYgmZz6TEOHqJO."
+              },
+              "correo": {
+                "type": "string",
+                "example": "mail@mail.com"
+              },
+              "direccion": {
+                "type": "string",
+                "example": "Av. siempre viva"
+              },
+              "dni": {
+                "type": "string",
+                "example": "12345678"
+              },
+              "fechanac": {
+                "type": "string",
+                "example": "2000-12-23T00:00:00"
+              },
+              "nombre": {
+                "type": "string",
+                "example": "Jose"
+              },
+              "sexo": {
+                "type": "string",
+                "example": "M"
+              },
+              "tipoUsuario": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "users_listar_400": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string",
+            "example": "No existen pacientes en este momento."
+          },
+          "data": {
+            "type": "array",
+            "example": []
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "doctor_register_request": {
+        "type": "object",
+        "properties": {
+          "apellidoP": {
+            "type": "string",
+            "example": "Perez"
+          },
+          "apellidoM": {
+            "type": "string",
+            "example": "Perez"
+          },
+          "password": {
+            "type": "string",
+            "example": "xxxxxxx"
+          },
+          "correo": {
+            "type": "string",
+            "example": "mail@mail.com"
+          },
+          "direccion": {
+            "type": "string",
+            "example": "av 123"
+          },
+          "dni": {
+            "type": "string",
+            "example": "12345678"
+          },
+          "fechanac": {
+            "type": "string",
+            "example": "2000-12-23T00:00:00"
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Jose"
+          },
+          "sexo": {
+            "type": "string",
+            "example": "M"
+          },
+          "especialidad": {
+            "type": "string",
+            "example": "Podologo"
+          },
+          "turno": {
+            "type": "string",
+            "example": "Noche"
+          }
+        }
+      },
+      "doctor_register_200": {
+        "type": "object",
+        "properties": {
+          "data_user": {
+            "$ref": "#/components/schemas/users_listar_200"
+          },
+          "data_doctor": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "639153c694280c48d15b5316"
+              },
+              "especialidad": {
+                "type": "string",
+                "example": "PODOLOGO"
+              },
+              "turno": {
+                "type": "string",
+                "example": "NOCHE"
+              },
+              "doctor": {
+                "type": "string",
+                "example": "639153c694280c48d15b5315"
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "doctor_register_400": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string",
+            "example": "Especialidad, turno no definido"
+          },
+          "data": {
+            "type": "array",
+            "example": []
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "doctor_listar_200": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "63869839abc2dc33ffd59886"
+              },
+              "especialidad": {
+                "type": "string",
+                "example": "PODOLOGO"
+              },
+              "turno": {
+                "type": "string",
+                "example": "NOCHE"
+              },
+              "doctor": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "63869839abc2dc33ffd59885"
+                  },
+                  "apellidoP": {
+                    "type": "string",
+                    "example": "DOCTOR"
+                  },
+                  "apellidoM": {
+                    "type": "string",
+                    "example": "DOCTOR"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "$2a$10$iI1H852CpWi75s0dyL8aHeXD0T2TW3lfalor9.0JGszPx9HY6PXSG"
+                  },
+                  "correo": {
+                    "type": "string",
+                    "example": "doctor@gmail.com"
+                  },
+                  "direccion": {
+                    "type": "string",
+                    "example": "Av. siempre viva"
+                  },
+                  "dni": {
+                    "type": "string",
+                    "example": "00000001"
+                  },
+                  "fechanac": {
+                    "type": "string",
+                    "example": "2004-04-13T00:00:00"
+                  },
+                  "nombre": {
+                    "type": "string",
+                    "example": "DOCTOR DOCTOR"
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "tipoUsuario": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "doctor_listar_400": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string",
+            "example": "No existen doctores en este momento"
+          },
+          "data": {
+            "type": "array",
+            "example": []
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "doctor_listar_especialidad_400": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string",
+            "example": "No existen doctores con esta especialidad"
+          },
+          "data": {
+            "type": "array",
+            "example": []
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "doctor_listar_turno_400": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string",
+            "example": "No existen doctores con ese horario"
+          },
+          "data": {
+            "type": "array",
+            "example": []
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "doctor_listar_todo_400": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string",
+            "example": "No existen doctores con estas caracteristicas"
+          },
+          "data": {
+            "type": "array",
+            "example": []
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      }
+    }
+  }
+}

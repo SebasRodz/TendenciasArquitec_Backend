@@ -55,8 +55,8 @@ router.post("/probar", (req, res) => {
  *                   type: string
  *                   example: "M"
  *                 tipoUsuario:
- *                   type: string
- *                   example: "0"
+ *                   type: number
+ *                   example: 0
  *     responses:
  *       200:
  *         description: OK

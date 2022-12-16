@@ -1,9 +1,11 @@
 // Developer branch
 const app = require("./src/app");
 const path = require("path");
-//Swagger UI (OPEN API)
 
+//Swagger UI (OPEN API)
 const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./OpenAPI.json");
+/*
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerSpec = {
     definition: {
@@ -26,9 +28,10 @@ const swaggerSpec = {
         },
         apis: [`${path.join(__dirname, "src/routes/*.js")}`],
     };
-
+*/
 //middleware
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(swaggerSpec)));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(swaggerSpec)));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Settings
 app.set('port', process.env.PORT || 3000)
