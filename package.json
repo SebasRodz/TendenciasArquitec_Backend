@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon index.js",
     "build": "node index.js",
-    "test": "mocha src/test/*.test.js --timeout 10000 --exit"
+    "test": "mocha src/test/*.test.js --timeout 10000 --exit",
+    "coverage": "nyc npm run test"
   },
   "keywords": [],
   "author": "",
