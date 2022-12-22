@@ -22,8 +22,6 @@ jobs:
           node-version: 16
       - name: Instalar dependencias
         run: npm install --no-audit --no-found --no-optional
-      - name: Build
-        run: npm run build
       - name: Ejecutar Tests
         run: npm run coverage
       - name: Install Vercel CLI
