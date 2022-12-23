@@ -1,6 +1,7 @@
 const express = require('express');
 const res = require('express/lib/response');
 const cors = require('cors');
+var morgan = require('morgan');
 
 const userRoutes = require("./routes/user"); 
 const userDni = require("./routes/dni");
@@ -9,6 +10,7 @@ const citaRoutes = require("./routes/cita")
 
 // Inititializitations
 const app = express();
+app.use(morgan('dev'));
 require('./database.js');
 
 // Middlewares
