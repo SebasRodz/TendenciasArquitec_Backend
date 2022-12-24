@@ -441,8 +441,225 @@
           }
         }
       }
+    },
+    "/api/cita/register": {
+      "get": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Registra nuevas citas.",
+        "description": "Retorna un mensaje de confirmacion de la cita. En caso de error retorna un mensaje de error.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/cita_register_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_register_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Hubo un error al registrar la cita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_register_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cita/listar": {
+      "get": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Lista las citas existentes.",
+        "description": "Retorna la lista con la información de citas existentes.",
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_listar_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Hubo un error al consultar las citas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_listar_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/listar/paciente/:dni": {
+      "get": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Lista las citas existentes de la persona según su dni.",
+        "description": "Retorna la lista con la información de citas existentes por persona.",
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_listar_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Hubo un error al consultar la cita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_listar_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/listar/doctor/:dni": {
+      "get": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Lista las citas existentes de los doctores según su dni.",
+        "description": "Retorna la lista con la información de citas existentes por doctor.",
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_listar_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Hubo un error al consultar la cita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_listar_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    ,
+    "/actualizar/status": {
+      "get": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Actualiza el estado de las citas.",
+        "description": "Retorna un mensaje de confirmacion de actualización de la cita. En caso de error retorna un mensaje de error.",
+        "responses": {
+          "200": {
+            "description": "Operacion satisfactoria con resultados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_update_request"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Hubo un error al actualizar la cita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cita_listar_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
+  
   "components": {
     "schemas": {
       "dni_200" : {
@@ -849,6 +1066,32 @@
           }
         }
       },
+      "cita_update_request": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "63936f961ff5727268a75418"
+          },
+          "status": {
+            "type": "number",
+            "example": 1
+          }
+        }
+      },
+      "cita_register_request": {
+        "type": "object",
+        "properties": {
+          "dni_paciente": {
+            "type": "string",
+            "example": "72188369"
+          },
+          "dni_doctor": {
+            "type": "string",
+            "example": "00000001"
+          }
+        }
+      },
       "doctor_register_request": {
         "type": "object",
         "properties": {
@@ -931,6 +1174,35 @@
           }
         }
       },
+      "cita_listar_200": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "639153c694280c48d15b5316"
+              },
+              "paciente": {
+                "$ref": "#/components/schemas/users_listar_200"
+              },
+              "doctor": {
+                "$ref": "#/components/schemas/doctor_listar_200"
+              }
+            }
+          }
+        }
+      },
+      "cita_listar_400": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
       "doctor_register_400": {
         "type": "object",
         "properties": {
@@ -945,6 +1217,28 @@
           "success": {
             "type": "boolean",
             "example": false
+          }
+        }
+      },
+      "cita_register_200":{
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "cita_register_400":{
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "example": null
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
           }
         }
       },
