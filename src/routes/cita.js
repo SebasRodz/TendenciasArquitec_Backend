@@ -5,6 +5,9 @@ const citaSchema = require("../models/cita")
 const { send } = require("express/lib/response");
 const { utils } = require("mocha");
 const cita = require("../models/cita");
+const nodemailer = require("nodemailer");
+const { config } = require("../config");
+const hbs = require('nodemailer-express-handlebars');
 const router = express.Router();
 
 //Registro de cita, construccion...
@@ -14,6 +17,32 @@ router.post("/register", (req, res) => {
 
   const doctor = new userSchema;
   const cita = new citaSchema;
+  var transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: config.user_mail,
+        pass: config.user_pass
+    }
+  });
+  transporter.use('compile', hbs({
+    viewEngine: 'express-handlebars',
+    viewPath: './src/templates/',
+  }));
+
+  var mailoptions = {
+    from: "Remitente",
+    to: "",
+    subject: "Cita",
+    text: "Su cita ha sido registrada con exito",
+    template: 'cita',
+    context: {
+      name: "",
+      doctor: "",
+      turno: "",
+      especialidad: "",
+    }
+  };
 
   userSchema.findOne(
     {
@@ -32,6 +61,8 @@ router.post("/register", (req, res) => {
         })
       } else {
         cita.paciente = user._id;
+        mailoptions.to = user.correo;
+        mailoptions.context.name = user.nombre;
         userSchema.findOne(
           {
             dni: dni_doctor,
@@ -49,6 +80,7 @@ router.post("/register", (req, res) => {
               })
             } else {
               doctor._id = user._id;
+              mailoptions.context.doctor = user.nombre;
               doctorSchema.findOne(
                 {
                   doctor: doctor._id,
@@ -67,6 +99,8 @@ router.post("/register", (req, res) => {
                   } else {
                     cita.doctor = doctor._id;
                     cita.especialidad = doctor.especialidad;
+                    mailoptions.context.especialidad = doctor.especialidad;
+                    mailoptions.context.turno = doctor.turno;
                     cita.turno = doctor.turno;
                     cita.status = 0;
                     cita.save((err) => {
@@ -76,6 +110,17 @@ router.post("/register", (req, res) => {
                           sucess:false,
                         });
                       } else {
+                        transporter.sendMail(mailoptions, function (error, info) {
+                          if (error) {
+                            console.log(error);
+                            res.status(400).send({
+                              data: error,
+                              sucess: false,
+                            });
+                          } else {
+                            console.log("Email enviado: " + info.response);
+                          }
+                        });
                         res.status(200).send({
                           sucess: true,
                         });

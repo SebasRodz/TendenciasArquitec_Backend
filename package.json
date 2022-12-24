@@ -22,13 +22,15 @@
     "mongoose": "^6.7.2",
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.7",
+    "nodemailer": "^6.8.0",
+    "nodemailer-express-handlebars": "^6.0.0",
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
-    "jscoverage": "^0.6.0",
+    "jscoverage": "^0.5.4",
     "mocha": "^10.1.0",
     "nodemon": "^2.0.20",
     "nyc": "^15.1.0"
