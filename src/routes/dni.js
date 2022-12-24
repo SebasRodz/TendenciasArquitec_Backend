@@ -102,7 +102,7 @@ const fetch = require('node-fetch');
  *                   type: string
  *                   example: "apiperu.dev"
  */
-router.get('/pac/:dni', async (req, res) => {
+router.get('/pac1/:dni', async (req, res) => {
     const {dni} = req.params
     //fetch(`https://citasenlinea.sisol.gob.pe/Account/FnGetPaciente?idTipoDocumento=1&nroDocumento=${dni}`)
     fetch(`http://line.consultadatosreniec.online/consultdni/${dni}`)

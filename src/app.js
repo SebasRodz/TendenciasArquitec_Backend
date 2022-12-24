@@ -21,7 +21,8 @@ app.use('/api/doctor', doctorRoutes);
 app.use('/api/cita', citaRoutes)
 app.use('/api', userDni);
 
-// Global Variables
+// Global Variables 
+//asdad
 
 // Routes
 app.get('/', (req, res) => {
