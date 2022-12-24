@@ -12,7 +12,7 @@ describe("Test para probar la ruta de DNI", () => {
     describe("Pruebas para probar el funcionamiento de la API", () => {
         it("Probando la API esperando una respuesta positiva", (done) => {
             chai.request(server)
-                .get("/api/pac/71814625")
+                .get("/api/pac1/71814625")
                 .end((err, res) => {
                     expect(res).to.have.status(200);
                     done();
